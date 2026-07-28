@@ -1,0 +1,15 @@
+pandas>=2.0
+numpy>=1.24
+requests>=2.31
+scipy>=1.10
+
+# L8 visualization layer (dashboard/app.py). Altair ships with Streamlit.
+streamlit>=1.30
+# Optional: enables live auto-refresh in the dashboard sidebar.
+# streamlit-autorefresh>=1.0
+
+# Optional: only needed for live L2 RAG (--use-rag --live-odds). The SDK is
+# lazy-imported inside SentimentAgent and fully mocked in the test suite, so the
+# core pipeline and CI run without it installed.
+# openai>=1.0
+

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Secrets & local env
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+
+# Reference PDFs (large; keep locally, not in git)
+*.pdf
+
+# Local runtime artifacts
+data/paper_trades.csv
+data/archive/
+
+# IDE
+.idea/
+.vscode/

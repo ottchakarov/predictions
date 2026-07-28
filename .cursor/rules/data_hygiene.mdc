@@ -1,0 +1,34 @@
+---
+description: Leakage, purging, embargoing & CV rules for the feature store (AFML)
+globs: src/wc_bot/features/*.py
+alwaysApply: false
+---
+
+# L3 Data-Hygiene Rules
+
+Source: *Advances in Financial ML* [AFML] Ch.4/7/12, *Algorithmic Trading*
+[Chan] Ch.1. See `docs/QUANT_ARCHITECTURE.md` Part II.
+
+- **Strict point-in-time.** Retrieval targeting a moment MUST use a STRICT
+  inequality (`date < as_of`). The predicted match and everything after it are
+  invisible. No look-ahead bias is permitted, ever [AFML, Chan].
+- **No model math here.** `FeatureStore` MUST NOT import any model or contain
+  Poisson/Elo/Kelly/pricing logic. It returns structured, timestamped frames;
+  models own all statistics.
+- **Label intervals.** Features built from rolling/look-back windows MUST carry
+  an information interval `(info_start, resolve_time)` for downstream purging.
+- **Purge + embargo.** CV training sets MUST be PURGED of observations whose
+  interval overlaps the test interval [AFML 7.1], and an EMBARGO applied after
+  each test fold [AFML 7.2].
+- **No standard K-Fold.** `sklearn.KFold`, `cross_val_score`, and
+  `train_test_split(shuffle=True)` on temporal data are BANNED. Use
+  PurgedKFold / Combinatorial Purged CV [AFML 7.3, 12].
+- **Not IID.** Weight overlapping observations by average uniqueness, not equally
+  [AFML 4]; combine with recency decay.
+
+```python
+# ✅ strict, leakage-free
+train = store.training_frame(as_of=kickoff)   # keeps date < kickoff only
+# ❌ banned for time series
+from sklearn.model_selection import KFold     # NO
+```

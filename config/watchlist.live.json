@@ -1,0 +1,37 @@
+{
+  "_comment": "LIVE watchlist of REAL Polymarket markets (default when --live-odds is passed). Each token uses the real CLOB 'token_id' hash from Gamma (market.clobTokenIds) and the on-chain 'condition_id' (market.conditionId); there is NO 'mock_price'. 'model' maps the outcome to the model probability ('home'|'draw'|'away' or a '+'-combo). NOTE: Polymarket markets/token ids are ephemeral -- refresh from https://gamma-api.polymarket.com/events?slug=<slug> before a real run, and flip 'is_active' to false once a match has concluded.",
+  "matches": [
+    {
+      "_live": "FIFA World Cup Round of 32, Belgium vs Senegal, gameStartTime 2026-07-01T20:00:00Z. Binary moneyline market 'Will Belgium win on 2026-07-01?' (slug ...-bel) -- 'Yes' = Belgium win (regulation), 'No' = draw or Senegal win. Verified acceptingOrders with a live two-sided CLOB book (Belgium Yes bid 0.32 / ask 0.34, ~2c spread) on 2026-07-01.",
+      "match_id": "BEL-SEN-2026-07-01",
+      "home_team": "Belgium",
+      "away_team": "Senegal",
+      "neutral": true,
+      "market_type": "moneyline",
+      "match_time": "2026-07-01T20:00:00+00:00",
+      "is_active": false,
+      "market_slug": "fifwc-bel-sen-2026-07-01-bel",
+      "condition_id": "0x9c183f63913cee589ec7a8d584fb7743a541f724edc047837c053c027bdf9074",
+      "tokens": {
+        "Yes": { "token_id": "51550519425443949709378847779649788844021865732808641475643382400046061806350", "model": "home" },
+        "No":  { "token_id": "10989844990030080333609297670891411757055697600785810827263876026375780592917", "model": "draw+away" }
+      }
+    },
+    {
+      "_live": "FIFA World Cup Round of 32, United States vs Bosnia and Herzegovina, gameStartTime 2026-07-02T00:00:00Z. Binary moneyline market 'Will United States win on 2026-07-01?' (slug ...-usa) -- 'Yes' = USA win (regulation), 'No' = draw or Bosnia win. Verified acceptingOrders with a live two-sided CLOB book (USA Yes bid 0.71 / ask 0.72, ~1c spread) on 2026-07-01.",
+      "match_id": "USA-BIH-2026-07-01",
+      "home_team": "United States",
+      "away_team": "Bosnia and Herzegovina",
+      "neutral": true,
+      "market_type": "moneyline",
+      "match_time": "2026-07-02T00:00:00+00:00",
+      "is_active": true,
+      "market_slug": "fifwc-usa-bih-2026-07-01-usa",
+      "condition_id": "0xe9d96f957f3f5e4ffa0e920087edf967c4cc353e9d1ad0c2d7ae928b32b61cb0",
+      "tokens": {
+        "Yes": { "token_id": "4633569295739345295929299496370398790000429459208303788658430774702495448690", "model": "home" },
+        "No":  { "token_id": "44189580121326701382348840375458128219759940465231540933448875780513744121975", "model": "draw+away" }
+      }
+    }
+  ]
+}

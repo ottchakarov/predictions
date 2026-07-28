@@ -1,0 +1,33 @@
+---
+description: Vig removal, true-edge, Kelly sizing & ledger integrity (LSB, Chan)
+globs: src/wc_bot/decision.py, src/wc_bot/ledger.py, scripts/settle_ledger.py
+alwaysApply: false
+---
+
+# L6/L7 Execution & Pricing Rules
+
+Source: *The Logic of Sports Betting* [LSB], *Algorithmic Trading* [Chan]. See
+`docs/QUANT_ARCHITECTURE.md` Part III.
+
+- **De-vig before EV.** NEVER compute EV or edge from a raw quote. First strip the
+  hold: normalise an event's outcome break-even percentages to sum to 1 [LSB].
+- **Implied prob = break-even %.** `implied = Risk / (Risk + Win)` (= order-book
+  mid for a $0–$1 contract) [LSB].
+- **Edge definition.** `edge = model_prob − fair_market_prob`, where
+  `fair_market_prob` is DE-VIGGED. Comparing to a raw quote overstates edge by the
+  full hold [LSB].
+- **Costs are mandatory.** EV MUST be net of fees, gas/settlement, and expected
+  slippage from book depth [Chan]. The edge buffer MUST scale with the measured
+  hold (target: positive CLV ≥ ~half the hold) [LSB].
+- **Fractional Kelly only.** Size with fractional Kelly + a hard per-bet bankroll
+  cap. Full Kelly is BANNED ("better underleveraged than overleveraged") [Chan].
+- **Ledger integrity.** Append-only & idempotent: de-dup on
+  `[match_id, token_id, market_type]`; `record()` never mutates a row. Settlement
+  is the only OPEN→SETTLED writer and leaves other rows byte-for-byte unchanged.
+  An OPEN row with no parseable `match_time` MUST raise.
+
+```python
+# ✅ RULE: de-vig before EV
+fair = dict(zip(outcomes, remove_vig([prices[o] for o in outcomes])))
+edge = model_prob - fair[outcome]          # not model_prob - raw_price
+```

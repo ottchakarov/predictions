@@ -1,0 +1,48 @@
+{
+  "_comment": "MOCK watchlist for the offline demo (default when --live-odds is NOT passed). Every token has a 'mock_price' and a fake 'token_id'; the pipeline prices off 'mock_price' via build_mock_client. 'model' picks the model probability for that outcome: a base outcome ('home'|'draw'|'away') or a '+'-combo (e.g. 'draw+away' for a home-team 'No' token). Team names must match the dataset spelling (e.g. 'United States'). For real markets use config/watchlist.live.json with --live-odds.",
+  "matches": [
+    {
+      "match_id": "ARG-FRA-3way",
+      "home_team": "Argentina",
+      "away_team": "France",
+      "neutral": true,
+      "market_type": "moneyline",
+      "match_time": "2026-06-25T18:00:00+00:00",
+      "is_active": true,
+      "market_slug": "world-cup-argentina-vs-france",
+      "tokens": {
+        "Argentina": { "token_id": "MOCK_ARG_WIN", "model": "home", "mock_price": 0.34 },
+        "Draw":      { "token_id": "MOCK_ARG_DRAW", "model": "draw", "mock_price": 0.30 },
+        "France":    { "token_id": "MOCK_ARG_FRA", "model": "away", "mock_price": 0.40 }
+      }
+    },
+    {
+      "match_id": "BRA-USA-binary",
+      "home_team": "Brazil",
+      "away_team": "United States",
+      "neutral": true,
+      "market_type": "moneyline",
+      "match_time": "2026-06-25T21:00:00+00:00",
+      "is_active": true,
+      "market_slug": "will-brazil-beat-usa",
+      "tokens": {
+        "Yes": { "token_id": "MOCK_BRA_YES", "model": "home", "mock_price": 0.55 },
+        "No":  { "token_id": "MOCK_BRA_NO", "model": "draw+away", "mock_price": 0.45 }
+      }
+    },
+    {
+      "match_id": "GER-JPN-concluded",
+      "home_team": "Germany",
+      "away_team": "Japan",
+      "neutral": true,
+      "market_type": "moneyline",
+      "match_time": "2026-06-20T18:00:00+00:00",
+      "is_active": false,
+      "market_slug": "world-cup-germany-vs-japan",
+      "tokens": {
+        "Germany": { "token_id": "MOCK_GER_WIN", "model": "home", "mock_price": 0.50 },
+        "Japan":   { "token_id": "MOCK_GER_JPN", "model": "away", "mock_price": 0.30 }
+      }
+    }
+  ]
+}

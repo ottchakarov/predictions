@@ -1,0 +1,23 @@
+---
+description: Non-negotiable quant-correctness invariants for the prediction-market bot
+alwaysApply: true
+---
+
+# Core Quant Invariants (precedence over convenience)
+
+Rationale and citations live in `docs/QUANT_ARCHITECTURE.md`. If a request
+conflicts with a rule here, STOP and flag it — do not silently violate it.
+
+- **Correctness first.** A backtest that is fast but leaky is worse than none
+  [Chan]. Statistical correctness outranks brevity and "making the test pass".
+- **Strict point-in-time, everywhere.** Never use future information to compute a
+  present signal (a match's own result, post-kickoff data, dataset-wide
+  "latest" aggregates). Time-targeted retrieval uses a STRICT inequality
+  (`date < as_of`).
+- **One code path.** Backtest and live MUST be the same program, differing only
+  in the data source and the L7 sink (paper ledger vs signed order) [Chan]. Never
+  fork logic between backtest and live.
+- **Settlement hygiene.** An OPEN ledger row without an explicit, parseable
+  `match_time` MUST raise and halt. Never infer conclusion time from a proxy.
+- **Annotate intent.** Next to any EV, cross-validation, or point-in-time
+  retrieval logic, cite the governing rule (e.g. `# RULE: de-vig before EV`).

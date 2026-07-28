@@ -1,0 +1,34 @@
+---
+description: Poisson/Dixon-Coles scoring-model rules (Soccermatics, Chan)
+globs: src/wc_bot/models/*.py
+alwaysApply: false
+---
+
+# L4 Scoring Model Rules
+
+Source: *Soccermatics* [SM], *Algorithmic Trading* [Chan]. See
+`docs/QUANT_ARCHITECTURE.md` Part I.
+
+- **Generative over exact scores.** The model MUST produce a bivariate
+  Poisson / Dixon-Coles **score matrix**. Derive 1X2, totals, double-chance and
+  tournament markets by COLLAPSING that matrix — never model them as independent
+  heads [SM].
+- **Simplicity & linearity.** Keep parameters minimal; the rate link MUST be
+  log-linear (`log λ = c + home + attack_i + defence_j`); regularise team
+  strengths. Added nonlinearity/free parameters invite data-snooping bias and
+  require explicit justification [Chan].
+- **World Cup structure.** Model group stage (draws allowed) and knockouts (no
+  draw; extra time / penalties) distinctly. Do not reuse raw group-stage draw
+  mass for knockout markets [SM].
+- **Recency.** Weight fixtures with time decay; never treat a 1950 and a 2025
+  international as equally informative.
+- **Interface parity.** Every model MUST expose `fit` / `predict` /
+  `match_probabilities(home, away, neutral=...)` returning
+  `{"home","draw","away"}`, plus `model_version` and `knows_team()`, so it stays
+  a drop-in for the pipeline.
+
+```python
+# ✅ derive every market from the one score matrix
+m = model.score_matrix(home, away, neutral=True)
+one_x_two = model.matrix_to_1x2(m)   # not three separate fitted models
+```
